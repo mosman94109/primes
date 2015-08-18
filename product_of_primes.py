@@ -10,29 +10,25 @@ of the primes, the number n, and the ratio of these two quantities.
 
 import math as m
 
-#LARGE_NUM = 100000
-LARGE_NUM = 2 ** 18
+LARGE_NUM = 2 ** 20
 
 def get_primes(max_num):
-    primes = [2, 3]
-    counter = 0
+    primes = (2, 3)
     def check_if_prime(num):
-        i = 1
-        while (i < len(primes)):
-            is_prime = True
-            if num % primes[i] == 0:
-                is_prime = False
+        for prime in primes[1: ]: # Skip 2; we're only evaulating odd integers
+            num_is_prime = True
+            if prime > m.sqrt(max_num): # https://en.wikipedia.org/wiki/Prime_number says you can stop at sqrt of n 
                 break
-            else:
-                i += 1
-        return is_prime
+            elif num % prime == 0:
+                num_is_prime = False
+                break
+        return num_is_prime
 
     num_to_check = 5
-    while num_to_check <= max_num:
-#        print "Checking {}".format(num_to_check)
-        is_prime = check_if_prime(num_to_check)
-        if is_prime:
-            primes.append(num_to_check)
+    while num_to_check <=  max_num:
+        num_is_prime = check_if_prime(num_to_check)
+        if num_is_prime:
+            primes +=  (num_to_check,)
         num_to_check += 2
 
     return primes
@@ -47,7 +43,3 @@ primes = get_primes(LARGE_NUM)
 sum_of_logs_of_primes = get_sum_of_logs_of_primes(primes)
 print "Sum of logs: {}, n: {}, ratio: {}".format(sum_of_logs_of_primes, 
         LARGE_NUM, sum_of_logs_of_primes / LARGE_NUM)
-
-print len(primes)
-
-

@@ -1,31 +1,27 @@
 #!/usr/bin/env python
+""" Calculates the first NUM_PRIMES prime numbers.
 """
-"""
+import math as m
 
-primes = [2, 3]
+NUM_PRIMES = 100000
+primes = (2, 3)
 
-def get_primes(max_num):
-    def check_if_prime(num):
-        i = 1
-        while (i < len(primes)):
-            is_prime = True
-            if num % primes[i] == 0:
-                is_prime = False
-                break
-            else:
-                i += 1
-        return is_prime
+def check_if_prime(num):
+    num_is_prime = True
+    for prime in primes[1: ]: # Skip 2, we're only evaluating odd numbers
+        if prime > m.sqrt(num): # https://en.wikipedia.org/wiki/Prime_number says you can stop at sqrt of n
+            break
+        if num % prime == 0:
+            num_is_prime = False
+            break
+    return num_is_prime
 
-    num_to_check = 5
-    while num_to_check <= max_num:
-        is_prime = check_if_prime(num_to_check)
-        if is_prime:
-            primes.append(num_to_check)
-        num_to_check += 2
+num_to_check = 5
+while len(primes) < NUM_PRIMES:
+    num_is_prime = check_if_prime(num_to_check)
+    if num_is_prime:
+        primes += (num_to_check,)
+    num_to_check += 2
 
-get_primes(LARGE_NUM)
-
-print primes
-print len(primes)
-
+print "First {} primes\n: {}".format(NUM_PRIMES, primes)
 
